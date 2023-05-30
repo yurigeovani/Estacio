@@ -16,28 +16,28 @@ void listarOpcoes(){
     printf("\n5) Atualizacao de dados");
     printf("\n6) Remocao de alunos");
     printf("\n0) Sair");
-    printf("\nOpcao: ");
+    puts("\nOpcao: ");
 }
 
-char validarOpcao(int opcao){
-    if (isdigit(opcao)){
-        printf("entrou");
-        return opcao;    
-    }
-}
+// char validarOpcao(int opcao){
+//     if (isdigit(opcao)){
+//         printf("entrou");
+//         return opcao;    
+//     }
+// }
 
 int main(int argc, char const *argv[])
 {
     struct Aluno a1;
     int opcao = 1;
 
-    while (opcao!=0)
+    while (opcao)
     {
         listarOpcoes();
-        scanf("%i", &opcao);
+        scanf("%c", &opcao);
         // printf("%i", validarOpcao(opcao));
         
-        opcao = validarOpcao(opcao);
+        // opcao = validarOpcao(opcao);
 
         switch (opcao)
         {
