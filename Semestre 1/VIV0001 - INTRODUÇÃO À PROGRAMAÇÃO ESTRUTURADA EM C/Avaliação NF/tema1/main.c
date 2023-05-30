@@ -1,11 +1,30 @@
 #include<stdio.h>
-#include<stdlib.h>
+#include<ctype.h>
 
 struct Aluno {
     int matricula;
     char *nome;
 };
 
+void listarOpcoes(){
+    printf("\n############## ESTACIO ACADEMY ##############");
+    printf("\nInforme a opcao desejada:");
+    printf("\n1) Cadastro de alunos");
+    printf("\n2) Listagem de alunos");
+    printf("\n3) Calculo de media");
+    printf("\n4) Pesquisa de alunos");
+    printf("\n5) Atualizacao de dados");
+    printf("\n6) Remocao de alunos");
+    printf("\n0) Sair");
+    printf("\nOpcao: ");
+}
+
+char validarOpcao(int opcao){
+    if (isdigit(opcao)){
+        printf("entrou");
+        return opcao;    
+    }
+}
 
 int main(int argc, char const *argv[])
 {
@@ -14,17 +33,11 @@ int main(int argc, char const *argv[])
 
     while (opcao!=0)
     {
-        printf("\n############## ESTACIO ACADEMY ##############");
-        printf("\nInforme a opcao desejada:");
-        printf("\n1) Cadastro de alunos");
-        printf("\n2) Listagem de alunos");
-        printf("\n3) Cálculo de média");
-        printf("\n4) Pesquisa de alunos");
-        printf("\n5) Atualização de dados");
-        printf("\n6) Remoção de alunos");
-        printf("\n0) Sair");
-        printf("\nOpcao: ");
+        listarOpcoes();
         scanf("%i", &opcao);
+        // printf("%i", validarOpcao(opcao));
+        
+        opcao = validarOpcao(opcao);
 
         switch (opcao)
         {
@@ -35,10 +48,14 @@ int main(int argc, char const *argv[])
             break;
         case 2:
             printf("\n%i %s", a1.matricula, a1.nome);
+            break;
         case 0:
             break;
+        default:
+            printf("\nSelecione uma opcao correta!");
+            break;
         }
+        opcao=90;
     }
-    
     return 0;
 }
