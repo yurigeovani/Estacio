@@ -1,11 +1,11 @@
 #include <stdio.h>
 // #include <stdlib.h>
 
-// struct Aluno
-// {
-//     int matricula;
-//     char *nome;
-// };
+struct Aluno
+{
+    int matricula;
+    char *nome;
+};
 
 // void listarOpcoes()
 // {
@@ -20,47 +20,40 @@
 
 int main()
 {
-    // struct Aluno a1;
+    struct Aluno a1;
     char opcao;
-    int test = 2;
 
-    while (opcao)
+    while (opcao!=48)
     {
-        printf("\n############## ESTACIOs ACADEMY ##############");
+        printf("\n############## ESTACIO ACADEMY ##############");
         printf("\nInforme a opcao desejada:");
         printf("\n1) Cadastro de alunos");
         printf("\n2) Listagem de alunos");
         printf("\n3) Calculo de media");
-        // printf("\n4) Pesquisa de alunos");
-        // printf("\n5) Atualizacao de dados");
-        // printf("\n6) Remocao de alunos");
+        printf("\n4) Pesquisa de alunos");
+        printf("\n5) Atualizacao de dados");
+        printf("\n6) Remocao de alunos");
         printf("\n0) Sair");
-        puts("\nOpcao: ");
-        scanf("%s", &opcao);
-        // printf("%i", validarOpcao(opcao));
+        printf("\nOpcao: ");
+        scanf(" %c", &opcao);
 
-        // opcao = validarOpcao(opcao);
-
-        test = atoi(opcao);
-        switch (test)
+        switch (opcao)
         {
-        case 1:
-            // a1.matricula = 123;
-            // a1.nome = "Tests";
-            // printf("\nUSUARIO CADASTRADO!\n\n");
-            printf("\nop1");
+        case 49:
+            a1.matricula = 123;
+            a1.nome = "Tests";
+            printf("\nUSUARIO CADASTRADO!\n\n");
             break;
-        case 2:
-            // printf("\n%i %s", a1.matricula, a1.nome);
-            printf("\nop2");
+        case 50:
+            printf("\n%i %s", a1.matricula, a1.nome);
             break;
-        case 3:
+        case 51:
             printf("\nop3");
             break;
-        case 0:
+        case 48:
             break;
         default:
-            printf("\nSelecione uma opcao correta: %i !!!", test);
+            printf("\nSelecione uma opcao correta!!!");
             break;
         }
     }
