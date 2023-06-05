@@ -1,35 +1,83 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-struct Aluno
+typedef struct Aluno
 {
     int matricula;
-    char *nome;
+    char nome[100];
     int idade;
     char genero; // m or f or o
     float media;
-};
+    struct Aluno *next;
+} Aluno;
 
-void adicionarAluno (){
-    struct Aluno aluno;
-    printf("MATRICULA: ");
-    scanf("%i", &aluno.matricula);
-    printf("NOME: ");
-    fgets(aluno.nome, sizeof(aluno.nome), stdin);  // read string
-    // scanf(" %s", aluno.nome);
-    printf("IDADE: ");
-    scanf("%i", &aluno.idade);
-    printf("GENERO: ");
-    scanf("%c", &aluno.genero);
-    printf("MEDIA: ");
-    scanf("%f", &aluno.media);
+// void adicionarAluno (){
+//     char temp; // variavel temporaria pra limpar o buffer apos int e ENTER
+//     Aluno aluno;
+//     printf("MATRICULA: ");
+//     scanf(" %i", &aluno.matricula);
+// 	scanf("%c", &temp); // instrucao temporaria pra limpar o buffer apos int e ENTER
+//     printf("NOME: ");
+//     scanf("%[^\n]", aluno.nome); // le todos os caracteres, exceto o \n
+//     //fgets(aluno.nome, sizeof(aluno.nome), stdin);  // EVITAR! adiciona um \n apos string
+//     printf("IDADE: ");
+//     scanf(" %i", &aluno.idade);
+//     printf("GENERO: ");
+//     scanf(" %c", &aluno.genero);
+//     printf("MEDIA: ");
+//     scanf(" %f", &aluno.media);
     
-    printf("\nALUNO CADASTRADO COM SUCESSO!\n");
-    printf("\tMATRICULA: %i\n", aluno.matricula);
-    printf("\tNOME: %s\n", aluno.nome);
-    printf("\tIDADE: %i\n", aluno.idade);
-    printf("\tGENERO: %c\n", aluno.genero);
-    printf("\tMEDIA: %f\n", aluno.media);
+//     printf("\nALUNO CADASTRADO COM SUCESSO!\n");
+//     printf("\tMATRICULA: %i\n", aluno.matricula);
+//     printf("\tNOME: %s\n", aluno.nome);
+//     printf("\tIDADE: %i\n", aluno.idade);
+//     printf("\tGENERO: %c\n", aluno.genero);
+//     printf("\tMEDIA: %f\n", aluno.media);
+// }
+
+Aluno *criarAluno (int matricula){
+    Aluno *aluno = (Aluno*)malloc(sizeof(Aluno));
+    aluno -> matricula = matricula;
+    aluno -> next = NULL;
 }
+
+Aluno *insertAluno (Aluno *head, int matricula) {
+    Aluno *novoAluno = criarAluno(matricula);
+    if(head == NULL) {
+        head = novoAluno;
+    } else {
+        novoAluno -> next = head;
+        head = novoAluno;
+    }
+
+    printf("Aluno adicionado\n");
+    return head;
+}
+
+void listAluno (Aluno *head){
+    if(head == NULL){
+        printf("\nlista vazia");
+        return;
+    }
+    Aluno *temp = head;
+    printf("\nlinked list: ");
+    while (temp != NULL)
+    {
+        printf("%d ", temp -> matricula);
+        temp = temp-> next;
+    }
+    printf("\n");
+}
+
+void freeList(Aluno* head) {
+    Aluno* temp = head;
+    while (temp != NULL) {
+        Aluno* nextAluno = temp->next;
+        free(temp);
+        temp = nextAluno;
+    }
+}
+
 
 void listarOpcoes()
 {
@@ -50,13 +98,15 @@ char digitarOpcao (char opcao){
     return opcao;
 }
 
-char selecionarOpcao(char opcao) {
+void selecionarOpcao(char opcao) {
+    Aluno *head = NULL;
+
     switch (opcao) {
     case 49:
-        adicionarAluno();
+        head = insertAluno(head,123);
         break;
     case 50:
-        // printf("%i %s\n\n", aluno.matricula, aluno.nome);
+        listAluno(head);
         break;
     case 51:
         printf("\nop3");
@@ -71,7 +121,6 @@ char selecionarOpcao(char opcao) {
 
 int main()
 {
-    // struct Aluno aluno;
     char opcao;
 
     while (opcao!=48)
