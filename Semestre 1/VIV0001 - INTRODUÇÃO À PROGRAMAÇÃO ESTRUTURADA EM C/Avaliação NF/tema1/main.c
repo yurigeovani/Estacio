@@ -16,7 +16,7 @@ typedef struct Aluno
 //     Aluno aluno;
 //     printf("MATRICULA: ");
 //     scanf(" %i", &aluno.matricula);
-// 	scanf("%c", &temp); // instrucao temporaria pra limpar o buffer apos int e ENTER
+// 	   scanf("%c", &temp); // instrucao temporaria pra limpar o buffer apos int e ENTER
 //     printf("NOME: ");
 //     scanf("%[^\n]", aluno.nome); // le todos os caracteres, exceto o \n
 //     //fgets(aluno.nome, sizeof(aluno.nome), stdin);  // EVITAR! adiciona um \n apos string
@@ -35,14 +35,18 @@ typedef struct Aluno
 //     printf("\tMEDIA: %f\n", aluno.media);
 // }
 
-Aluno *criarAluno (int matricula){
+Aluno *criarAluno (int matricula, char nome[100], int idade, char genero, float media){
     Aluno *aluno = (Aluno*)malloc(sizeof(Aluno));
     aluno -> matricula = matricula;
+    aluno -> nome[100] = nome;
+    aluno -> idade = idade;
+    aluno -> genero = genero;
+    aluno -> media = media;
     aluno -> next = NULL;
 }
 
-Aluno *insertAluno (Aluno *head, int matricula) {
-    Aluno *novoAluno = criarAluno(matricula);
+Aluno *insertAluno (Aluno *head, int matricula) {;
+    Aluno *novoAluno = criarAluno();
     if(head == NULL) {
         head = novoAluno;
     } else {
@@ -98,9 +102,7 @@ char digitarOpcao (char opcao){
     return opcao;
 }
 
-void selecionarOpcao(char opcao) {
-    Aluno *head = NULL;
-
+Aluno *selecionarOpcao(Aluno *head, char opcao) {
     switch (opcao) {
     case 49:
         head = insertAluno(head,123);
@@ -117,17 +119,20 @@ void selecionarOpcao(char opcao) {
         printf("\nSelecione uma opcao correta!!!");
         break;
     }
+    return head;
 }
 
 int main()
 {
+    Aluno *head = NULL;
     char opcao;
 
     while (opcao!=48)
     {
         listarOpcoes();
         opcao = digitarOpcao(opcao);
-        selecionarOpcao(opcao);
+        head = selecionarOpcao(head, opcao);
     }
+    freeList(head);
     return 0;
 }
