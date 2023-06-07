@@ -38,15 +38,32 @@ typedef struct Aluno
 Aluno *criarAluno (int matricula, char nome[100], int idade, char genero, float media){
     Aluno *aluno = (Aluno*)malloc(sizeof(Aluno));
     aluno -> matricula = matricula;
-    aluno -> nome[100] = nome;
+    aluno -> nome[100] = nome[100];
     aluno -> idade = idade;
     aluno -> genero = genero;
     aluno -> media = media;
     aluno -> next = NULL;
+    return aluno;
 }
 
-Aluno *insertAluno (Aluno *head, int matricula) {;
-    Aluno *novoAluno = criarAluno();
+Aluno *insertAluno (Aluno *head) {;
+    char temp, nome[100], genero; // variavel temporaria pra limpar o buffer apos int e ENTER
+    int matricula, idade;
+    float media;
+    printf("MATRICULA: ");
+    scanf(" %i", &matricula);
+    scanf("%c", &temp); // instrucao temporaria pra limpar o buffer apos int e ENTER
+    printf("NOME: ");
+    scanf("%[^\n]", nome); // le todos os caracteres, exceto o \n
+    // fgets(aluno.nome, sizeof(aluno.nome), stdin);  // EVITAR! adiciona um \n apos string
+    printf("IDADE: ");
+    scanf(" %i", &idade);
+    printf("GENERO: ");
+    scanf(" %c", &genero);
+    printf("MEDIA: ");
+    scanf(" %f", &media);
+
+    Aluno *novoAluno = criarAluno(matricula, nome, idade, genero, media);
     if(head == NULL) {
         head = novoAluno;
     } else {
@@ -105,7 +122,7 @@ char digitarOpcao (char opcao){
 Aluno *selecionarOpcao(Aluno *head, char opcao) {
     switch (opcao) {
     case 49:
-        head = insertAluno(head,123);
+        head = insertAluno(head);
         break;
     case 50:
         listAluno(head);
