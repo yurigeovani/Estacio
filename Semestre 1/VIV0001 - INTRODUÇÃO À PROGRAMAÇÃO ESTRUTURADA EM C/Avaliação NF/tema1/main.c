@@ -19,7 +19,6 @@ Aluno *criarAluno(Aluno *alunos){
 
     alunos[i].matricula = i+1;
     printf("MATRICULA: %d\n", alunos[i].matricula);
-    // scanf("%d", &aluno->matricula);
         scanf("%c", &temp); // instrucao temporaria pra limpar o buffer apos int e ENTER
     printf("NOME: ");
     fgets(alunos[i].nome, sizeof(alunos[i].nome), stdin);
