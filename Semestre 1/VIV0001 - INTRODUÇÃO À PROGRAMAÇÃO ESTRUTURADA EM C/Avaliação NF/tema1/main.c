@@ -183,7 +183,7 @@ void listAlunoByMatricula (Aluno *alunos){
 }
 
 void mediaGeral (Aluno *alunos){
-    float mediaGeral;
+    float mediaGeral = 0;
     int i = 0;
 
     printf("\n############## MEDIA GERAL ##############");
