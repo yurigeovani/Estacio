@@ -1,104 +1,102 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<string.h>
 
 typedef struct Aluno
 {
-    int matricula;
-    char nome[100];
-    int idade;
-    char genero; // m or f or o
+    int matricula, idade;
+    char nome[100], genero;
     float media;
-    struct Aluno *next;
 } Aluno;
 
-// void adicionarAluno (){
-//     char temp; // variavel temporaria pra limpar o buffer apos int e ENTER
-//     Aluno aluno;
-//     printf("MATRICULA: ");
-//     scanf(" %i", &aluno.matricula);
-// 	   scanf("%c", &temp); // instrucao temporaria pra limpar o buffer apos int e ENTER
-//     printf("NOME: ");
-//     scanf("%[^\n]", aluno.nome); // le todos os caracteres, exceto o \n
-//     //fgets(aluno.nome, sizeof(aluno.nome), stdin);  // EVITAR! adiciona um \n apos string
-//     printf("IDADE: ");
-//     scanf(" %i", &aluno.idade);
-//     printf("GENERO: ");
-//     scanf(" %c", &aluno.genero);
-//     printf("MEDIA: ");
-//     scanf(" %f", &aluno.media);
-    
-//     printf("\nALUNO CADASTRADO COM SUCESSO!\n");
-//     printf("\tMATRICULA: %i\n", aluno.matricula);
-//     printf("\tNOME: %s\n", aluno.nome);
-//     printf("\tIDADE: %i\n", aluno.idade);
-//     printf("\tGENERO: %c\n", aluno.genero);
-//     printf("\tMEDIA: %f\n", aluno.media);
-// }
+Aluno *criarAluno(Aluno *alunos){
+    char temp;
+    int i;
 
-Aluno *criarAluno (int matricula, char nome[100], int idade, char genero, float media){
-    Aluno *aluno = (Aluno*)malloc(sizeof(Aluno));
-    aluno -> matricula = matricula;
-    aluno -> nome[100] = nome[100];
-    aluno -> idade = idade;
-    aluno -> genero = genero;
-    aluno -> media = media;
-    aluno -> next = NULL;
-    return aluno;
-}
-
-Aluno *insertAluno (Aluno *head) {;
-    char temp, nome[100], genero; // variavel temporaria pra limpar o buffer apos int e ENTER
-    int matricula, idade;
-    float media;
-    printf("MATRICULA: ");
-    scanf(" %i", &matricula);
-    scanf("%c", &temp); // instrucao temporaria pra limpar o buffer apos int e ENTER
-    printf("NOME: ");
-    scanf("%[^\n]", nome); // le todos os caracteres, exceto o \n
-    // fgets(aluno.nome, sizeof(aluno.nome), stdin);  // EVITAR! adiciona um \n apos string
-    printf("IDADE: ");
-    scanf(" %i", &idade);
-    printf("GENERO: ");
-    scanf(" %c", &genero);
-    printf("MEDIA: ");
-    scanf(" %f", &media);
-
-    Aluno *novoAluno = criarAluno(matricula, nome, idade, genero, media);
-    if(head == NULL) {
-        head = novoAluno;
-    } else {
-        novoAluno -> next = head;
-        head = novoAluno;
-    }
-
-    printf("Aluno adicionado\n");
-    return head;
-}
-
-void listAluno (Aluno *head){
-    if(head == NULL){
-        printf("\nlista vazia");
-        return;
-    }
-    Aluno *temp = head;
-    printf("\nlinked list: ");
-    while (temp != NULL)
+    while (alunos[i].matricula) //verifica a próxima matricula livre
     {
-        printf("%d ", temp -> matricula);
-        temp = temp-> next;
+        i++;
     }
-    printf("\n");
+
+    alunos[i].matricula = i+1;
+    printf("MATRICULA: %d\n", alunos[i].matricula);
+    // scanf("%d", &aluno->matricula);
+        scanf("%c", &temp); // instrucao temporaria pra limpar o buffer apos int e ENTER
+    printf("NOME: ");
+    fgets(alunos[i].nome, sizeof(alunos[i].nome), stdin);
+        alunos[i].nome[strlen(alunos[i].nome)-1] = '\0'; // remove o \n do ultimo valor do array, dado pelo fgets
+
+    while (alunos[i].idade <= 0 || alunos[i].idade > 120)
+    {
+        printf("IDADE: ");
+        scanf("%d", &alunos[i].idade);
+
+        if(alunos[i].idade <= 0 || alunos[i].idade > 120)
+            printf("\nEntrada invalida! Informe uma idade válida.\n");
+    }
+
+    while (alunos[i].genero != 70 && alunos[i].genero != 77 && 
+            alunos[i].genero != 102 && alunos[i].genero != 109 && 
+            alunos[i].genero != 111 && alunos[i].genero != 79)
+    {
+        printf("GENERO (m/f/o): ");
+        scanf(" %c", &alunos[i].genero);
+
+        if(alunos[i].genero != 70 && alunos[i].genero != 77 && 
+            alunos[i].genero != 102 && alunos[i].genero != 109 && 
+            alunos[i].genero != 111 && alunos[i].genero != 79)
+            printf("\nEntrada invalida! Informe M para masculino, F para feminino, O para outros.\n");
+    }
+
+    alunos[i].media = -1;
+    while (alunos[i].media < 0 || alunos[i].media > 10)
+    {
+        printf("MEDIA: ");
+        scanf("%f", &alunos[i].media);
+
+        if(alunos[i].media < 0 || alunos[i].media > 10)
+            printf("\nEntrada invalida! Informe uma media válida.\n");
+    }
+
+    return alunos;
 }
 
-void freeList(Aluno* head) {
-    Aluno* temp = head;
-    while (temp != NULL) {
-        Aluno* nextAluno = temp->next;
-        free(temp);
-        temp = nextAluno;
+void listAllAlunos (Aluno *alunos){
+    int i = 0;
+    printf("\n############## ALUNOS ##############");
+    while (alunos[i].matricula)
+    {
+        printf("\nMATRICULA: %i", alunos[i].matricula);
+        printf("\nNOME: %s", alunos[i].nome);
+        printf("\nIDADE: %i", alunos[i].idade);
+        if (alunos[i].genero==109 || alunos[i].genero==77)
+        {
+            printf("\nGENERO: Masculino");
+        } else if (alunos[i].genero==102 || alunos[i].genero==70)
+        {
+            printf("\nGENERO: Feminino");
+        } else {
+            printf("\nGENERO: Outros");
+        }
+        printf("\nMEDIA: %.2f\n", alunos[i].media);
+        i++;
     }
 }
 
+void mediaGeral (Aluno *alunos){
+    float mediaGeral;
+    int i = 0;
+
+    printf("\n############## MEDIA GERAL ##############");
+    while (alunos[i].matricula)
+    {
+        mediaGeral += alunos[i].media;
+        i++;
+    }
+
+    mediaGeral /= i;
+
+    printf("\nMedia geral: %.2f\n", mediaGeral);
+}
 
 void listarOpcoes()
 {
@@ -119,16 +117,25 @@ char digitarOpcao (char opcao){
     return opcao;
 }
 
-Aluno *selecionarOpcao(Aluno *head, char opcao) {
+void selecionarOpcao(char opcao, Aluno *alunos) {
     switch (opcao) {
     case 49:
-        head = insertAluno(head);
+        alunos = criarAluno(alunos);
         break;
     case 50:
-        listAluno(head);
+        listAllAlunos(alunos);
         break;
     case 51:
-        printf("\nop3");
+        mediaGeral(alunos);
+        break;
+    case 52:
+        printf("\nPesquisa por matricula");
+        break;
+    case 53:
+        printf("\nUpdate");
+        break;
+    case 54:
+        printf("\nDelete");
         break;
     case 48:
         break;
@@ -136,20 +143,18 @@ Aluno *selecionarOpcao(Aluno *head, char opcao) {
         printf("\nSelecione uma opcao correta!!!");
         break;
     }
-    return head;
 }
 
 int main()
 {
-    Aluno *head = NULL;
-    char opcao;
+    Aluno alunos[100];
+    char opcao = 49;
 
-    while (opcao!=48)
+    while (opcao != 48)
     {
         listarOpcoes();
         opcao = digitarOpcao(opcao);
-        head = selecionarOpcao(head, opcao);
+        selecionarOpcao(opcao, alunos);
     }
-    freeList(head);
     return 0;
 }
