@@ -8,69 +8,16 @@ typedef struct Aluno
     float media;
 } Aluno;
 
-Aluno *criarAluno(Aluno *alunos){
+Aluno *createAluno(Aluno *alunos, int matricula){
     char temp;
-    int i;
+    int i = matricula-1;
 
-    while (alunos[i].matricula) //verifica a próxima matricula livre
-    {
-        i++;
-    }
-
-    alunos[i].matricula = i+1;
-    printf("MATRICULA: %d\n", alunos[i].matricula);
-        scanf("%c", &temp); // instrucao temporaria pra limpar o buffer apos int e ENTER
+    alunos[i].matricula = matricula;
+    printf("\nMATRICULA: %d\n", alunos[i].matricula);
+    scanf("%c", &temp); // instrucao temporaria pra limpar o buffer apos int e ENTER
     printf("NOME: ");
     fgets(alunos[i].nome, sizeof(alunos[i].nome), stdin);
-        alunos[i].nome[strlen(alunos[i].nome)-1] = '\0'; // remove o \n do ultimo valor do array, dado pelo fgets
-
-    while (alunos[i].idade <= 0 || alunos[i].idade > 120)
-    {
-        printf("IDADE: ");
-        scanf("%d", &alunos[i].idade);
-
-        if(alunos[i].idade <= 0 || alunos[i].idade > 120)
-            printf("\nEntrada invalida! Informe uma idade válida.\n");
-    }
-
-    while (alunos[i].genero != 70 && alunos[i].genero != 77 && 
-            alunos[i].genero != 102 && alunos[i].genero != 109 && 
-            alunos[i].genero != 111 && alunos[i].genero != 79)
-    {
-        printf("GENERO (m/f/o): ");
-        scanf(" %c", &alunos[i].genero);
-
-        if(alunos[i].genero != 70 && alunos[i].genero != 77 && 
-            alunos[i].genero != 102 && alunos[i].genero != 109 && 
-            alunos[i].genero != 111 && alunos[i].genero != 79)
-            printf("\nEntrada invalida! Informe M para masculino, F para feminino, O para outros.\n");
-    }
-
-    alunos[i].media = -1;
-    while (alunos[i].media < 0 || alunos[i].media > 10)
-    {
-        printf("MEDIA: ");
-        scanf("%f", &alunos[i].media);
-
-        if(alunos[i].media < 0 || alunos[i].media > 10)
-            printf("\nEntrada invalida! Informe uma media válida.\n");
-    }
-
-    printf("\nAluno cadastrado!\n");
-    return alunos;
-}
-
-Aluno *updateAlunoByMatricula(Aluno *alunos){
-    char temp;
-    int i, matricula;
-    printf("\nInforme a matricula: ");
-    scanf("%d", &matricula);
-
-    i = matricula-1;
-        scanf("%c", &temp); // instrucao temporaria pra limpar o buffer apos int e ENTER
-    printf("NOME: ");
-    fgets(alunos[i].nome, sizeof(alunos[i].nome), stdin);
-        alunos[i].nome[strlen(alunos[i].nome)-1] = '\0'; // remove o \n do ultimo valor do array, dado pelo fgets
+    alunos[i].nome[strlen(alunos[i].nome) - 1] = '\0'; // remove o \n do ultimo valor do array, dado pelo fgets
 
     alunos[i].idade = -1;
     while (alunos[i].idade <= 0 || alunos[i].idade > 120)
@@ -106,6 +53,28 @@ Aluno *updateAlunoByMatricula(Aluno *alunos){
             printf("\nEntrada invalida! Informe uma media válida.\n");
     }
 
+    return alunos;
+}
+
+Aluno *addAluno(Aluno *alunos){
+    int i = 0;
+
+    while (alunos[i].matricula) //verifica a próxima matricula livre
+    {
+        i++;
+    }
+
+    alunos = createAluno(alunos, i+1);
+    printf("\nAluno cadastrado!\n");
+    return alunos;
+}
+
+Aluno *updateAlunoByMatricula(Aluno *alunos){
+    int matricula;
+    printf("\nInforme a matricula: ");
+    scanf("%d", &matricula);
+
+    alunos = createAluno(alunos, matricula);
     printf("\nAluno atualizado!\n");
     return alunos;
 }
@@ -149,7 +118,8 @@ void listAllAlunos (Aluno *alunos){
 }
 
 void listAlunoByMatricula (Aluno *alunos){
-    int i, matricula;
+    int i = 0;
+    int matricula;
     printf("\nInforme a matricula: ");
     scanf("%d", &matricula);
 
@@ -158,7 +128,7 @@ void listAlunoByMatricula (Aluno *alunos){
         i++;
     }
 
-    if (matricula == 0 || alunos[i].matricula != matricula) {
+    if (!strcmp(alunos[i].nome,"DESATIVADO") || matricula == 0 || alunos[i].matricula != matricula) {
         printf("\nMatricula nao encontrada!\n");
     } else if (alunos[i].matricula == matricula)
     {
@@ -219,7 +189,7 @@ char digitarOpcao (char opcao){
 void selecionarOpcao(char opcao, Aluno *alunos) {
     switch (opcao) {
     case 49:
-        alunos = criarAluno(alunos);
+        alunos = addAluno(alunos);
         break;
     case 50:
         listAllAlunos(alunos);
