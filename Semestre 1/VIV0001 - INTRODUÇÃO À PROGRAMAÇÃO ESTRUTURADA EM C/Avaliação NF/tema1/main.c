@@ -94,6 +94,7 @@ Aluno *deleteAlunoByMatricula(Aluno *alunos){
 
 void listAllAlunos (Aluno *alunos){
     int i = 0;
+    int qtdAlunosMatriculados = 0;
     printf("\n############## ALUNOS ##############");
     while (alunos[i].matricula)
     {
@@ -112,9 +113,13 @@ void listAllAlunos (Aluno *alunos){
                 printf("\nGENERO: Outros");
             }
             printf("\nMEDIA: %.2f\n", alunos[i].media);
+            qtdAlunosMatriculados++;
         }
         i++;
     }
+
+    if(qtdAlunosMatriculados==0)
+        printf("\nNenhum aluno cadastrado!\n");
 }
 
 void listAlunoByMatricula (Aluno *alunos){
@@ -154,17 +159,25 @@ void listAlunoByMatricula (Aluno *alunos){
 void mediaGeral (Aluno *alunos){
     float mediaGeral = 0;
     int i = 0;
+    int qtdAlunos = 0;
 
     printf("\n############## MEDIA GERAL ##############");
     while (alunos[i].matricula)
     {
-        mediaGeral += alunos[i].media;
+        if(strcmp(alunos[i].nome,"DESATIVADO"))
+        {
+            mediaGeral += alunos[i].media;
+            qtdAlunos++;
+        }
         i++;
     }
 
-    mediaGeral /= i;
-
-    printf("\nMedia geral: %.2f\n", mediaGeral);
+    if(qtdAlunos==0)
+        printf("\nNenhum aluno cadastrado!\n");
+    else{
+        mediaGeral /= qtdAlunos;
+        printf("\nMedia geral: %.2f\n", mediaGeral);
+    }
 }
 
 void listarOpcoes()
@@ -209,7 +222,7 @@ void selecionarOpcao(char opcao, Aluno *alunos) {
     case 48:
         break;
     default:
-        printf("\nSelecione uma opcao correta!!!");
+        printf("\nSelecione uma opcao correta!!!\n");
         break;
     }
 }
