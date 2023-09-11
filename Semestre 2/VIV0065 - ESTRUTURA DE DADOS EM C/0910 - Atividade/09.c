@@ -10,20 +10,13 @@ int main(int argc, char const *argv[])
 
     for (size_t i = 0; i < 5; i++)
     {
-        printf("Informe o valor de A na posicao %i: ", i);
+        printf("Informe o valor na posicao %i = ", i);
         scanf("%i", &vetor[i]);
     }
 
      for (int i = 0; i < 5; i++) {
-        printf("%d\n", vetor[i]*2);
+        printf("O dobro do valor na posicao %i eh = %d\n", i, vetor[i]*2);
     }
-
-/*     while (*vetor)
-    {
-        printf("O dobro eh = %i\n", *vetor*2);
-        vetor++;
-    }
- */
 
     return 0;
 }
