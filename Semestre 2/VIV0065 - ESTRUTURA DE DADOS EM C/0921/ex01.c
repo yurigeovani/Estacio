@@ -1,295 +1,286 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-typedef struct Lista
-{
-    int valor;
-    struct Lista *prox;
-}Lista;
+//criação de struct
+typedef struct no { // estrutura do tipo struct 
+	int valor;
+	struct no *prox; //ponteiro para o proximo
+}lista;
 
-// Lista *criar(){
-    //printf("Lista criada com sucesso!"\n);
-    //return NULL;
-// }
+//funções
 
-Lista *insere_inicio(Lista *l, int v){
-    Lista *novo =(Lista*)malloc(sizeof(Lista)) ;
-    novo->valor=v;
-    novo->prox=l;
-
-    printf("Inseri o valor %d no inicio da lista \n", v);
-    return novo;
+lista *cria(){
+	printf("Lista criada com sucesso\n");
+	return NULL;
 }
 
-Lista *insere_final(Lista *l, int v){
-    Lista *novo =(Lista*)malloc(sizeof(Lista)) ;
-    novo->valor=v;
-    novo->prox=NULL;
+lista *insere_inicio(lista *l, int v){
+	lista *novo=(lista*)malloc(sizeof(lista)); //criei um novo nó na lista do tamanho lista
+	novo->valor=v;
+	novo->prox=l;
+	printf("inseri o valor %d  no inicio da lista \n ", v);
+	return novo;
+}
 
-    if(l==NULL)
-        return novo;
+lista *insere_final(lista *l, int v){
+	lista *novo=(lista*)malloc(sizeof(lista));
+	novo->valor=v;
+	novo->prox= NULL;
+	if(l==NULL){
+		return novo;
+	}
+	lista *atual=l;
+	while (atual->prox !=NULL){
+		atual= atual->prox;
+	}
+	atual->prox=novo;
+	printf("Inseri o item %d no final da lista \n", v);
+	return l;
+	
+}
 
-    Lista *atual=l;
+lista *insere_posicao(lista *l, int v, int p){
+	lista *novo= (lista*)malloc(sizeof(lista));
+	novo->valor= v;
+	
+	if(p==1){
+		novo->prox= l;
+		return novo;
+	}
+	lista *atual=l;
+	lista * anterior=NULL;
+	int cont=1;
+	
+	while(atual!=NULL && cont<p){
+		cont++;
+		anterior=atual;
+		atual= atual->prox;
+	}
+	
+	if (cont!=p){
+		printf("posicação invalida\n");
+		free(novo);
+		return l;
+	}
+	 anterior->prox=novo;
+	 novo->prox=atual;
+	 printf("Inseri o item %d na posicao %d da lista", v, p);
+	 return l;
+	
+}
 
-    while (atual->prox!=NULL)
-    {
-        atual = atual->prox;
+lista *deletar_inicio(lista *l){
+	if(l==NULL){
+		printf("Lista vazia \n");
+		return NULL;
+	}
+	else {
+		lista *temp= l;
+		l=l->prox;
+		free(temp);
+		printf("Exclui o primeiro item da lista \n");
+		return l;
+	}
+}
+
+lista *deletar_final(lista *l){
+	if(l==NULL){
+		printf("Lista vazia\n");
+		return NULL;
+	}
+	else if(l->prox==NULL){
+		free(l);
+		printf("Exclui o unico item que havia na lista");
+		return NULL;
+	}
+	else {
+		lista *atual = l;
+		lista *anterior=NULL;
+		while(atual->prox!=NULL){
+			anterior=atual;
+			atual=atual->prox;
+		}
+		anterior->prox=NULL;
+		free(atual);
+		printf("Exclui o ultimo item da lista");
+		return l;
+	}
+	
+}
+
+lista *deletar_posicao(lista *l, int p){
+	if(l==NULL){
+		printf("Lista vazia \n");
+		return NULL;
+		
+	}
+	if (p==1){
+		lista *temp= l;
+		l=l->prox;
+		free(temp);
+		printf("Exclui o unico item da lista \n");
+		return l;
+	}
+	lista *atual=l;
+	lista *anterior=NULL;
+	int cont=1;
+	
+	while(atual!=NULL &&cont<p){
+		cont++;
+		anterior=atual;
+		atual= atual->prox;
+	}
+	if(cont!=p||atual==NULL){
+	printf("posicao invalida\n");
+	return l;
+	}	
+	
+	anterior->prox=atual->prox;
+	free(atual);
+	printf("exclui o item da posição %d da lista \n",p);
+	return l;
+	
+}
+
+void ler_inicio(lista *l){
+	lista *atual=l;
+	printf("\nElementos da lista\n\n");
+	while (atual!=NULL){
+		printf("%d -> ",atual->valor);
+		atual=atual->prox;
+	}
+	printf(" NULL\n");
+}
+void ler_final(lista *l) {
+    if (l == NULL) {
+        printf("Lista vazia\n");
+        return;
     }
-
-    atual->prox=novo;
-
-    printf("Inseri o valor %d no final da lista \n", v);
-    return l;
-}
-
-Lista *insere_posicao(Lista *l, int v, int p){
-    Lista *novo =(Lista*)malloc(sizeof(Lista)) ;
-    novo->valor=v;
     
-    if(p==1){
-        novo->prox=l;
-        return novo;
-    }
-    Lista *atual = l;
-    Lista *anterior = NULL;
-    int cont=1;
-
-    while (atual!=NULL && cont<p)
-    {
-        cont++;
-        anterior = atual;
-        atual=atual->prox;
+    // Caso base: Quando chegamos ao final da lista
+    if (l->prox == NULL) {
+        printf("%d -> ", l->valor);
+        return;
     }
     
-    if(cont!=p){
-        printf("Posicao invalida!\n");
-        free(novo);
-        return l;
-    }
+    // Chamada recursiva para percorrer o restante da lista
+    ler_final(l->prox);
 
-    anterior->prox=novo;
-    novo->prox=atual;
-    printf("Inseri o item %d na posicao %d da lista!", v, p);
-    return l;
+    // Impressão do elemento atual
+    printf("%d -> ", l->valor);
 }
 
-Lista *deletar_inicio(Lista *l){
-    if(l==NULL){
-        printf("Lista vazia!\n");
-        return NULL;
-    } else {
-        Lista *temp= l;
-        l=l->prox;
-        free(temp);
-        printf("Exclui o primeiro item da lista!\n");
-
-        return l;
-    }
-}
-
-Lista *deletar_final(Lista *l){
-    if(l==NULL){
-        printf("Lista vazia!\n");
-        return NULL;
-    }else if (l->prox==NULL)
-    {
-        free(l);
-        printf("Exclui o unico item que havia na lista!\n");
-        return NULL;
-    } else
-    {
-        Lista *atual = l;
-        Lista *anterior = NULL;
-        while (atual->prox==NULL)
-        {
-            anterior=atual;
-            atual=atual->prox;
-        }
-        anterior->prox=NULL;
-        free(atual);
-        printf("Exclui o ultimo item da lista!\n");
-        return l;
-    }
-}
-
-Lista *deletar_posicao(Lista *l, int p){
-    if(l==NULL){
-        printf("Lista vazia!\n");
-        return NULL;
-    }
-    if (p==1)
-    {
-        Lista *temp = l;
-        l=l->prox;
-        free(temp);
-        printf("Exclui o unico item da lista!\n");
-        return l;
-    }
-
-    Lista *atual=l;
-    Lista *anterior=NULL;
-    int cont=1;
-
-    while (atual!=NULL && cont<p){
-        cont++;
-        anterior=atual;
-        atual=atual->prox;
-    }
-    if (cont!=p || atual==NULL){
-        printf("Posicao invalida!\n");
-        return l;
+int buscar(lista *l, int v){
+	 if (l == NULL) {
+        printf("Lista vazia\n");
+        return 0;
     }
     
-    anterior->prox=atual->prox;
-    free(atual);
-    printf("Exclui o item da posicao %d da lista!\n");
-    return l;
-}
-
-void ler_inicio(Lista *l){
-    Lista *atual = l;
-    printf("Elementos da lista\n\n");
-    while (atual!=NULL)
-    {
-        printf("%d -> ", atual->valor);
-        atual=atual->prox;
-    }
-    printf("NULL");
-}
-
-void ler_final(Lista *l){
-    if(l==NULL){
-        printf("Lista vazia!\n");
-    }
-
-    Lista *atual = l;
-    Lista *anterior= NULL;
-
-    while (atual->prox!=NULL)
-    {
-        atual=atual->prox;
-    }
-
-    printf("Elementos da lista de tras pra frente\n\n");
-
-    while (atual!=NULL)
-    {
-        printf("%d -> ", atual->valor);
-        atual=anterior;
-    }
-}
-
-int buscar (Lista *l, int v){
-    if(l==NULL){
-        printf("Lista vazia!\n");
-        return NULL;
-    }
-
-    Lista *atual=l;
+    lista *atual=l;
     int p=1;
-
-    while (atual!=NULL)
-    {
-        if(atual->valor==v){
-            printf("Encontrei o valor %d na posicao %d na lista!\n", v, p);
-            return l;
-        }
-        atual=atual->prox;
-        p++;
-    }
-
-    printf("O valor %d não foi encontrado!\n");
-
-    return 0;
     
-}
-
-int buscar_quantidade(Lista *l){
-    int cont = 0;
-
-    Lista *atual = l;
     while(atual!=NULL){
-        cont++;
-        atual=atual->prox;
-    }
-
-    print("A lista tem %d elementos!\n", cont);
-
-    return cont;
+    	if(atual->valor==v){
+    		printf ("Econtrei o valor %d na posição %d da lista\n", v, p);
+    		return 1;
+		}
+		atual=atual->prox;
+		p++;
+	}
+	
+	printf("O valor %d não foi encontrado \n", v);
+	return 0;
 }
 
-void listarOpcoes () {
-    printf("################### MENU ###################\n");
-    printf("1 - Inserir no inicio\n");
-    printf("2 - Inserir no fim\n");
-    printf("3 - Inserir em uma posicao especifica\n");
-    printf("4 - Deletar no inicio\n");
-    printf("5 - Deletar no fim\n");
-    printf("6 - Deletar em uma posicao especifica\n");
-    printf("7 - Ler a lista do inicio ao fim\n");
-    printf("8 - Ler a lista do fim ao inicio\n");
-    printf("9 - Buscar elemento na lista\n");
-    printf("10 - Verificar quantidade de elementos na lista\n");
-    printf("0 - Sair\n");
+int quantidade (lista *l){
+	int cont = 0;
+	lista *atual=l;
+	while(atual!=NULL){
+		cont++;
+		atual= atual->prox;
+	}
+	printf("A lista tem %d elementos \n", cont);
+	return cont;
 }
 
-void selecionarOpcao(int opcao, Lista *mlista) {
-    switch (opcao)
-    {
-    case 1:
-        insere_inicio(mlista, 15);
-        break;
-    case 2:
-        insere_final(mlista, 23);
-        break;
-    case 3:
-        printf("Entrou no 3\n");
-        break;
-    case 4:
-        printf("Entrou no 4\n");
-        break;
-    case 5:
-        printf("Entrou no 5\n");
-        break;
-    case 6:
-        printf("Entrou no 6\n");
-        break;
-    case 7:
-        printf("Entrou no 7\n");
-        break;
-    case 8:
-        printf("Entrou no 8\n");
-        break;
-    case 9:
-        printf("Entrou no 9\n");
-        break;
-    case 10:
-        printf("Entrou no 10\n");
-        break;
-    case 0:
-        printf("SAIR!\n");
-        break;
-    default:
-        printf("Opcao invalida! Digite uma opcao valida!\n");
-        break;
-    }
-}
+//função principal
+int main(){
+	int op, valor, posicao;
+	lista *mlista;
+	
+	mlista=cria();
+	
+	do{
+		printf("\n \n Digite uma opcao: \n\n");
+		printf("1- inserir no inicio \n");
+		printf("2- inserir no final \n");
+		printf("3- inserir em uma posicao especifica \n");
+		printf("4- deletar no inicio \n");
+		printf("5- Deletar no fim \n");
+		printf("6- Deletar em uma posição especifica \n");
+		printf("7- ler a lista do inicio ao fim \n");
+		printf("8- Ler a lista do fim ao inicio \n");
+		printf("9- Buscar elemento na lista \n");
+		printf("10-  verificar quantidade de elementos na lista \n");
+		printf("0 - Sair \n");
+		scanf("%d",&op);
+		
+		
+		switch (op){
+			case 1: 
+				mlista= insere_inicio(mlista, 15);
+				break;	
+			case 2: 
+				printf("Digite o valor a ser inserido: ");
+				scanf("%d", &valor);
+				mlista= insere_final(mlista, valor);
+				break;
+			case 3:
+				printf("Digite o valor a ser inserido: ");
+				scanf("%d", &valor);
+				printf("Digite a posição para inserir: ");
+				scanf("%d", &posicao);
+				mlista= insere_posicao(mlista, valor, posicao);
+				break;
+			case 4: 
+				mlista= deletar_inicio(mlista);
+				break;
+		case 5:
+				mlista= deletar_final(mlista);
+				break;
+			case 6: 
+				printf("Digite a posição para deletar: ");
+				scanf("%d", &posicao);
+				mlista= deletar_posicao(mlista, posicao);
+				break;
+			case 7: 
+				ler_inicio(mlista);
+				break;
+		case 8: 
+				ler_final(mlista);
+				break;
+			case 9:
+				printf("Digite o valor a ser buscado: ");
+				scanf("%d", &valor);
+				
+				buscar(mlista, valor);
+				break;
+			case 10: 
+				quantidade(mlista);
+		
+			case 0: break;
+			default: 
+				printf("opção invalida\n");
+				
 
-int main(int argc, char const *argv[])
-{
-    int opcao, valorInserido;
-    Lista *mlista;
-
-    // mlista = cria();
-
-    do
-    {
-        listarOpcoes();
-        printf("\nDigite uma opcao: ");
-        scanf("%d", &opcao);
-
-        selecionarOpcao(opcao, mlista);
-    } while (opcao!=0);
-
-    return 0;
+		}
+		
+		
+		
+	
+		
+		
+		
+	}while (op!=0);
+	
 }
